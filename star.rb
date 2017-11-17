@@ -1,7 +1,6 @@
 require 'gosu'
 require './ZOrder'
 
-
 class Star
 	attr_reader :x, :y
 
@@ -11,8 +10,8 @@ class Star
 		@color.red = rand(256 - 40) + 40
 		@color.green = rand(256 - 40) + 40
 		@color.blue = rand(256 - 40) + 40
-		@x = rand *640
-		@y = rand * 480
+		@x = rand * 1280
+		@y = rand * 960
 	end
 
 	def draw

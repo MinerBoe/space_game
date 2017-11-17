@@ -11,7 +11,7 @@ class Tutorial < Gosu::Window
 
 	def initialize(number_of_players)
 		@number_of_players = number_of_players
-		super 640, 480
+		super 1280, 960
 		self.caption = "Tutorial Game"
 
 		@background_image = Gosu::Image.new("images/space.png", :tileable => true)
@@ -91,7 +91,7 @@ class Tutorial < Gosu::Window
 		@stars.each { |star| star.draw}
 		@font.draw("Player 1 Score: #{@player.score}", 10, 10, ZOrder::UI, 1.0, 1.0, Gosu::Color::YELLOW)
 		if number_of_players == 2
-			@font.draw("Player 2 Score: #{@player2.score}", 480, 10, ZOrder::UI, 1.0, 1.0, Gosu::Color::YELLOW)
+			@font.draw("Player 2 Score: #{@player2.score}", 1120, 10, ZOrder::UI, 1.0, 1.0, Gosu::Color::YELLOW)
 		end
 	end
 
