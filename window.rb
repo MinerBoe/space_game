@@ -14,7 +14,7 @@ class Tutorial < Gosu::Window
 		super 1280, 960
 		self.caption = "Tutorial Game"
 
-		@background_image = Gosu::Image.new("images/space.png", :tileable => true)
+		@background_image = Gosu::Image.new("images/space3.jpg", :tileable => true)
 		
 		
 		@player = Player.new
