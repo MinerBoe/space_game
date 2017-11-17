@@ -3,19 +3,28 @@ require './player'
 require './ZOrder'
 require './star'
 
+$stdout.sync = true
+
 class Tutorial < Gosu::Window
 
-	def initialize
+	attr_reader :number_of_players
+
+	def initialize(number_of_players)
+		@number_of_players = number_of_players
 		super 640, 480
 		self.caption = "Tutorial Game"
 
 		@background_image = Gosu::Image.new("images/space.png", :tileable => true)
 		
+		
 		@player = Player.new
 		@player.warp(320, 240)
-
-		@player2 = Player.new
-		@player2.warp(480, 240)
+		
+		
+		if number_of_players == 2
+			@player2 = Player.new
+			@player2.warp(480, 240)
+		end
 
 		@star_anim = Gosu::Image.load_tiles("images/star.png", 25, 25)
 		@stars = Array.new
@@ -27,26 +36,14 @@ class Tutorial < Gosu::Window
 
 		keystrokes(@player, 1)
 
-		keystrokes(@player2, 2)
-
-
-		# if Gosu.button_down? Gosu::KB_LEFT or Gosu::button_down? Gosu::GP_LEFT
-		# 	@player.turn_left
-		# end
-
-		# if Gosu.button_down? Gosu::KB_RIGHT or Gosu::button_down? Gosu::GP_RIGHT
-		# 	@player.turn_right
-		# end
-
-		# if Gosu.button_down? Gosu::KB_UP or Gosu.button_down? Gosu::GP_BUTTON_0
-		# 	@player.accelerate
-		# end
-
 		@player.move
 		@player.collect_stars(@stars)
 
-		@player2.move
-		@player2.collect_stars(@stars)
+		if number_of_players == 2
+			keystrokes(@player2, 2)
+			@player2.move
+			@player2.collect_stars(@stars)
+		end
 
 		if rand(100) < 4 and @stars.size < 25
 			@stars.push(Star.new(@star_anim))
@@ -88,10 +85,14 @@ class Tutorial < Gosu::Window
 	def draw
 		@background_image.draw(0, 0, ZOrder::BACKGROUND)
 		@player.draw
-		@player2.draw
+		if number_of_players == 2
+			@player2.draw
+		end
 		@stars.each { |star| star.draw}
 		@font.draw("Player 1 Score: #{@player.score}", 10, 10, ZOrder::UI, 1.0, 1.0, Gosu::Color::YELLOW)
-		@font.draw("Player 2 Score: #{@player2.score}", 480, 10, ZOrder::UI, 1.0, 1.0, Gosu::Color::YELLOW)
+		if number_of_players == 2
+			@font.draw("Player 2 Score: #{@player2.score}", 480, 10, ZOrder::UI, 1.0, 1.0, Gosu::Color::YELLOW)
+		end
 	end
 
 	def button_down(id)
@@ -104,4 +105,7 @@ class Tutorial < Gosu::Window
 
 end
 
-Tutorial.new.show
+puts "Would you like a 1 or 2 player game?"
+number_of_players = gets.chomp.to_i
+
+Tutorial.new(number_of_players).show
